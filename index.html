@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>NITRO LANE RIDER - REAL PICTURE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden}
+#bg{position:absolute;inset:0;background-image:url('bg.jpg');background-size:cover;background-position:center;animation:scroll 1.2s linear infinite}
+@keyframes scroll{from{background-position-y:0}to{background-position-y:100px}}
+#bike{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);width:42%;height:260px;background-image:url('bike.png');background-size:contain;background-repeat:no-repeat;background-position:center;mix-blend-mode:multiply;z-index:10;transition:left .12s}
+#hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:space-between;padding:0 12px;z-index:20;color:#fff;font-weight:900;font-family:Arial}
+#hud div{background:#facc15;color:#000;padding:7px 13px;border-radius:20px}
+#controls{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:16px;z-index:20}
+button{width:74px;height:74px;border-radius:50%;border:3px solid #fff;background:#111;color:#fff;font-size:30px}
+#start{position:absolute;inset:0;background:rgba(0,0,0,.7);z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;font-family:Arial;padding:20px}
+#start h1{color:#facc15;font-size:38px}
+#play{padding:14px 36px;border-radius:30px;background:#facc15;border:none;font-size:20px;font-weight:900;margin-top:16px}
+</style>
+</head>
+<body>
+<div id="game">
+<div id="bg"></div>
+<div id="hud"><div id="s">SCORE 0</div><div>3 LANES</div></div>
+<div id="bike"></div>
+<div id="controls"><button onclick="mv(-1)">◀</button><button onclick="mv(1)">▶</button></div>
+<div id="start"><h1>NITRO<br>LANE RIDER</h1><p style="margin-top:10px">The REAL picture - now playable</p><button id="play" onclick="document.getElementById('start').style.display='none';startGame()">▶ PLAY</button></div>
+</div>
+<script>
+let lane=1,score=0,playing=false;
+const bike=document.getElementById('bike');
+const pos=[18,50,82];
+function setBike(){bike.style.left=pos[lane]+'%';}
+function mv(d){if(!playing)return;lane=Math.max(0,Math.min(2,lane+d));setBike();}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')mv(-1);if(e.key==='ArrowRight')mv(1);});
+let sx=0;document.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-sx;if(dx>30)mv(1);if(dx<-30)mv(-1);});
+function startGame(){playing=true;setInterval(()=>{if(playing){score++;document.getElementById('s').innerText='SCORE '+score;}},100);}
+setBike();
+</script>
+</body>
+  </html>
